@@ -21,21 +21,22 @@ def main():
     print tz_counts2[:10]
     print ""
 
-    agents = Series([x.split()[0] for x in frame.a.dropna()])
+    agents = Series([x.split()[0] for x in frame['a'].dropna()])
     print "Top User Agents:"
     print agents.value_counts()[:10]
     print
 
-    cframe = frame[frame.a.notnull()]
+    cframe = frame[frame['a'].notnull()]
     operating_system = np.where(
         cframe['a'].str.contains('Windows'),
         'Windows',
         'Not Windows'
     )
     by_timezone_os = cframe.groupby(['tz', operating_system])
-    agg_counts = by_timezone_os.size().unstack().fillna(0)
-    indexer = agg_counts.sum(1).argsort()
-    count_subset = agg_counts.take(indexer)[-10:]
+    agg_counts = by_timezone_os.size().unstack()
+    agg_counts.fillna(0, inplace=True)
+    timezone_totals = agg_counts.sum(1).argsort()
+    count_subset = agg_counts.take(timezone_totals)[-10:]
     print "OS split by top timezones by counts:"
     print count_subset
     print ""
