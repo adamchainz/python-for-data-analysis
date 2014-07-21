@@ -5,7 +5,7 @@ import numpy as np
 
 
 def main():
-    path = 'usagov_bitly_data2012-03-16-1331923249.txt'
+    path = '1_usagov_bitly_data2012-03-16-1331923249.txt'
     records = [json.loads(line) for line in open(path)]
     frame = DataFrame(records)
 
